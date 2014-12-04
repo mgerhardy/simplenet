@@ -66,7 +66,7 @@ bool Network::start() {
 	sin.sin_port = htons(_port);
 
 	int t = 1;
-#ifdef _WIN32
+#ifdef WIN32
 	if (setsockopt(_socketFD, SOL_SOCKET, SO_REUSEADDR, (char*) &t, sizeof(t)) != 0) {
 #else
 	if (setsockopt(_socketFD, SOL_SOCKET, SO_REUSEADDR, &t, sizeof(t)) != 0) {
