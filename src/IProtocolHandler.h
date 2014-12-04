@@ -6,7 +6,7 @@
 
 namespace ai {
 
-typedef uint8_t ClientId;
+typedef uint16_t ClientId;
 
 /**
  * @brief Interface for the execution of assigned IProtocolMessage
@@ -18,13 +18,13 @@ public:
 	virtual ~IProtocolHandler() {
 	}
 
-	virtual void execute(const ClientId& clientId, const IProtocolMessage& message) = 0;
+	virtual void execute(const ClientId clientId, const IProtocolMessage& message) = 0;
 };
 
 #define PROTOCOL_HANDLER(MessageClass) \
 class MessageClass##Handler: public IProtocolHandler { \
 public: \
-	void execute(const ClientId& /*clientId*/, const IProtocolMessage& message) override { \
+	void execute(const ClientId /*clientId*/, const IProtocolMessage& message) override { \
 		const MessageClass& msg = static_cast<const MessageClass&>(message); \
 		execute##MessageClass(msg); \
 	} \
@@ -32,13 +32,5 @@ public: \
 }
 
 typedef std::shared_ptr<IProtocolHandler> ProtocolHandlerPtr;
-
-/**
- * @brief Use this deleter for any handler that should not get freed by @c delete.
- */
-struct ProtocolHandlerNopDeleter {
-	void operator()(IProtocolHandler* /* ptr */) {
-	}
-};
 
 }

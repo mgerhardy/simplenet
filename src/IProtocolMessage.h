@@ -32,7 +32,7 @@
 
 namespace ai {
 
-typedef uint8_t ProtocolId;
+typedef uint16_t ProtocolId;
 typedef std::deque<uint8_t> streamContainer;
 
 /**
@@ -126,19 +126,19 @@ public:
 	static std::string readString(streamContainer& in);
 
 public:
-	IProtocolMessage(const ProtocolId& id) :
+	IProtocolMessage(const ProtocolId id) :
 			_id(id) {
 	}
 
 	virtual ~IProtocolMessage() {
 	}
 
-	inline const ProtocolId& getId() const {
+	inline ProtocolId getId() const {
 		return _id;
 	}
 
 	virtual void serialize(streamContainer& out) const {
-		addByte(out, _id);
+		addShort(out, _id);
 	}
 };
 

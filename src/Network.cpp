@@ -163,6 +163,7 @@ void Network::update(long /*deltaTime*/) {
 		if (FD_ISSET(clientSocket, &writeFDsOut)) {
 			if (!client.out.empty()) {
 				uint8_t buf[4096];
+				// TODO: optimize
 				const std::size_t len = std::min(sizeof(buf), client.out.size());
 				for (std::size_t n = 0; n < len; ++n) {
 					buf[n] = client.out.at(n);
@@ -195,13 +196,13 @@ void Network::update(long /*deltaTime*/) {
 
 		ProtocolMessageFactory& factory = ProtocolMessageFactory::get();
 		if (factory.isNewMessageAvailable(client.in)) {
-			ScopedPtr<IProtocolMessage> msg(factory.create(client.in));
+			std::unique_ptr<IProtocolMessage> msg(factory.create(client.in));
 			if (!msg) {
 				i = closeClient(i);
 				continue;
 			}
 			IProtocolHandler* handler = ProtocolHandlerRegistry::get().getHandler(*msg);
-			if (handler)
+			if (handler != nullptr)
 				handler->execute(clientId, *msg);
 		}
 		++i;

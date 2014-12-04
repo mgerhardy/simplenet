@@ -24,7 +24,7 @@ public:
 		_registry.clear();
 	}
 
-	inline void registerHandler(const ProtocolId& type, IProtocolHandler* handler) {
+	inline void registerHandler(const ProtocolId type, IProtocolHandler* handler) {
 		_registry.insert(std::make_pair(type, handler));
 	}
 

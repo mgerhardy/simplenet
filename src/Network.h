@@ -54,7 +54,7 @@ protected:
 	typedef std::list<INetworkListener*> Listeners;
 	Listeners _listeners;
 public:
-	Network(uint16_t port = 10001, const std::string& hostname = "0.0.0.0");
+	Network(uint16_t port, const std::string& hostname = "0.0.0.0");
 	virtual ~Network();
 
 	bool start();
